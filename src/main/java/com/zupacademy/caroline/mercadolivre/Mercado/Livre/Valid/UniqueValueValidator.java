@@ -31,7 +31,7 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValueVali
         query.setParameter("obj",obj);
         List<?> list= query.getResultList();
 
-        Assert.state(list.size()<=1,"Foi encontrado mais de um"+domainClass+"com o atributo" +domainClass+"="+obj);
+        Assert.isTrue(list.size()<=1,"Foi encontrado mais de um"+domainClass+"com o atributo" +domainClass+"="+obj);
 
         return list.isEmpty();
     }
