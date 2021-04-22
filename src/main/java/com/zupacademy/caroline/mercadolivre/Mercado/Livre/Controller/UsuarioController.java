@@ -2,37 +2,45 @@ package com.zupacademy.caroline.mercadolivre.Mercado.Livre.Controller;
 
 
 
+
+import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Config.Security.TokenService;
+import com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.TokenDTO;
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.UsuarioRequest;
-import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model.Usuario;
-import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private AuthenticationManager authenticationManager;
 
-    public UsuarioController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    private TokenService tokenService;
+
+@PostMapping
+    ResponseEntity<TokenDTO> autenticar(@RequestBody @Valid UsuarioRequest request){
+
+    UsernamePasswordAuthenticationToken dadosLogin = request.converter();
+
+    try {
+        Authentication authentication =authenticationManager.authenticate(dadosLogin);
+        String token = tokenService.gerarToken(authentication);
+        return ResponseEntity.ok(new TokenDTO(token,"Bearer"));
+
+    }catch (AuthenticationException e){
+    return ResponseEntity.badRequest().build();
     }
 
-    @Transactional
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody @Valid UsuarioRequest requestDTO ){
-        Usuario usuario = requestDTO.converter();
-        return ResponseEntity.ok().body((usuarioRepository.save(usuario)));
-    }
-
-    @GetMapping
-    public List<Usuario> Get() {
-        return usuarioRepository.findAll();
-    }
 }
+
+    }
+
