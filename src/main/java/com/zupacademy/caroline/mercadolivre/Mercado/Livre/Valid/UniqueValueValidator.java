@@ -1,6 +1,6 @@
 package com.zupacademy.caroline.mercadolivre.Mercado.Livre.Valid;
 
-import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Repository.UsuarioRepository;
+
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;

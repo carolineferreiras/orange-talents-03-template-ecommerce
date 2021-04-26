@@ -1,4 +1,4 @@
-package com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO;
+package com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.Request;
 
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model.Categoria;
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model.Usuario;

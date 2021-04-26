@@ -1,4 +1,4 @@
-package com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO;
+package com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.Request;
 
 public class TokenDTO {
 

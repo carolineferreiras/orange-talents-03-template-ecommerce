@@ -1,5 +1,7 @@
 package com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Util.SenhaLimpa;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.sql.Array;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,27 +30,26 @@ public class Usuario  implements UserDetails {
     @NotEmpty
     @NotNull
     @Email
-    @Column(unique = true)
     private String email;
     @NotBlank
     @Length(min = 6)
     private String senha;
-    @PastOrPresent @NotNull
-    private LocalDateTime criadoEm = LocalDateTime.now();
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate criadoEm;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Perfil> perfis = new ArrayList<>();
 
+    @Deprecated
     public Usuario() {
     }
 
-    public Usuario(Long id, String email, String senha, LocalDateTime criadoEm) {
-        this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.criadoEm = criadoEm;
+    public Usuario(String email, String senha) {
     }
 
-    public Usuario(String email) {
+    public Usuario(@NotBlank @Email String email, @NotNull @Valid SenhaLimpa senhaLimpa) {
+        this.email = email;
+        this.senha = senhaLimpa.hash();
+        this.criadoEm = LocalDate.now();
     }
 
     public String getEmail() {
@@ -96,4 +98,6 @@ public class Usuario  implements UserDetails {
     public Object getId() {
         return id;
     }
+
+
 }

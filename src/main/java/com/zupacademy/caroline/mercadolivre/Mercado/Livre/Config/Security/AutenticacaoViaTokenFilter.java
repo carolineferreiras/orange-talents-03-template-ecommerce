@@ -16,41 +16,41 @@ import java.io.IOException;
 
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
-
     private TokenService tokenService;
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository repository;
 
-
-    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
+    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository repository) {
         this.tokenService = tokenService;
-        this.usuarioRepository = usuarioRepository;
+        this.repository = repository;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-    String token = recuperarToken (request);
-    boolean valido = tokenService.isTokenValido(token);
-    if (valido){
-        autenticarCliente(token);
-    }
-    filterChain.doFilter(request , response);
+        String token = recuperarToken(request);
+        boolean valido = tokenService.isTokenValido(token);
+        if (valido) {
+            autenticarCliente(token);
+        }
+
+        filterChain.doFilter(request, response);
     }
 
     private void autenticarCliente(String token) {
         Long idUsuario = tokenService.getIdUsuario(token);
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario , null , usuario.getAuthorities());
+        Usuario usuario = repository.findById(idUsuario).get();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String recuperarToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if (token == null || token.isEmpty() || !token.startsWith("Bearer")) {
+        if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
             return null;
         }
 
-        return token.substring(7 , token.length());
+        return token.substring(7, token.length());
     }
+
 }

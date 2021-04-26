@@ -1,7 +1,7 @@
 package com.zupacademy.caroline.mercadolivre.Mercado.Livre.Controller;
 
 
-import com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.CategoriaRequest;
+import com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.Request.CategoriaRequest;
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model.Categoria;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

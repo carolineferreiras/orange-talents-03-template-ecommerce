@@ -13,20 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private Autenticacao autenticacao;
+    private AutenticacaoService autenticacaoService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private  TokenService tokenService;
 
     @Override
     @Bean
@@ -34,27 +34,32 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-    ///Configurações de Autenticação
+    //Configuracoes de autenticacao
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(autenticacao).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-    /// Configuração de Autorização
+    //Configuracoes de autorizacao
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-            .antMatchers(HttpMethod.POST,"/auth").permitAll()
-            .anyRequest().authenticated()
-            .and().cors()
-            .and().csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService , usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/auth").permitAll()
+                .antMatchers(HttpMethod.POST,"/usuario").permitAll()
+                .antMatchers(HttpMethod.POST,"/produto").permitAll()
+                .antMatchers(HttpMethod.POST,"/categorias").permitAll()
+                .anyRequest().authenticated()
+                .and().cors()
+                .and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    //Configuração de recursos estaticos
+
+    //Configuracoes de recursos estaticos(js, css, imagens, etc.)
     @Override
     public void configure(WebSecurity web) throws Exception {
     }
+
+
 
 }
