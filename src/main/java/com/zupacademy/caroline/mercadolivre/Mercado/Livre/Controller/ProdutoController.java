@@ -1,6 +1,7 @@
 package com.zupacademy.caroline.mercadolivre.Mercado.Livre.Controller;
 
 
+import com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.Request.ImagemRequest;
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.DTO.Request.ProdutoRequest;
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model.Produto;
 import com.zupacademy.caroline.mercadolivre.Mercado.Livre.Model.Usuario;
@@ -42,6 +43,12 @@ public class ProdutoController {
         return produto.toString();
 
     }
+
+    @PostMapping(value = "produtos/{id}/imagens")
+    public String adicionaImagens(@PathVariable("id") Long id,  @Valid ImagemRequest request) {
+        return request;
+    }
+
 
 }
 

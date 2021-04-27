@@ -31,7 +31,6 @@ public class Produto {
     @NotNull @Positive
     private BigDecimal valor;
     @ManyToOne
-    @NotNull @Valid
     private  Categoria categoria;
     @ManyToOne
     @NotNull @Valid

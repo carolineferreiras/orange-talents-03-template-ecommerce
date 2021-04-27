@@ -22,11 +22,9 @@ public class UsuarioRequest {
     @Length(min=6)
     private String senha;
 
+    @Deprecated
     public UsuarioRequest() {
-
     }
-
-
 
     public UsuarioRequest(@NotBlank @Email String login, @NotBlank @Length(min = 6) String senha) {
         Assert.isTrue(StringUtils.hasLength(login),"Nao pode ser em branco");

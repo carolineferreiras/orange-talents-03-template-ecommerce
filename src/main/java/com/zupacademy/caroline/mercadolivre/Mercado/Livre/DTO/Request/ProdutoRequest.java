@@ -34,8 +34,6 @@ public class ProdutoRequest {
     @NotNull
     @Positive
     private BigDecimal valor;
-    @NotNull
-    @ExistsId(domainClass = Categoria.class, fieldName = "id")
     private Long idCategoria;
     @Size(min = 3)
     @Valid
