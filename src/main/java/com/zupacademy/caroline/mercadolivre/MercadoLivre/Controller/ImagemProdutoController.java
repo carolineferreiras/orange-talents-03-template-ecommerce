@@ -33,7 +33,6 @@ public class ImagemProdutoController {
 
     @PostMapping(value = "/produtos/{id}/imagens")
     @Transactional
-    //1
     public String adicionaImagens(@PathVariable("id") Long id,@Valid ImagemRequest request) {
         /*
          * 1) enviar imagens para o local onde elas vão ficar

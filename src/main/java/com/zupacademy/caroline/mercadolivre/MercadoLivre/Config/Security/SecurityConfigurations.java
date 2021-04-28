@@ -50,6 +50,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/produtos").permitAll()
                 .antMatchers(HttpMethod.POST,"/categorias").permitAll()
                 .antMatchers(HttpMethod.POST,"/produtos/1/imagens").permitAll()
+                //opiniao
 //                .anyRequest().authenticated()
                 .and().cors()
                 .and().csrf().disable()
