@@ -59,7 +59,6 @@ public class Produto {
         Assert.isTrue(this.caracteristica.size()>=3,"Todo produto precisa ter no minimo 3 caracteristicas ");
     }
 
-
     @Override
     public String toString() {
         return "Produto{" +
