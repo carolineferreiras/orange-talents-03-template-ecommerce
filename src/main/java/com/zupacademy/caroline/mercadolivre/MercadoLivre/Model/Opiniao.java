@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.Objects;
 
 @Entity
 public class Opiniao {
@@ -51,5 +52,31 @@ public class Opiniao {
                 ", usuario=" + consumidor +
                 ", produto=" + produto +
                 '}';
+    }
+
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Opiniao opiniao = (Opiniao) o;
+        return nota == opiniao.nota && Objects.equals(id, opiniao.id) && Objects.equals(titulo, opiniao.titulo) && Objects.equals(descricao, opiniao.descricao) && Objects.equals(consumidor, opiniao.consumidor) && Objects.equals(produto, opiniao.produto);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nota, titulo, descricao, consumidor, produto);
+    }
+
+    public int getNota() {
+        return nota;
     }
 }

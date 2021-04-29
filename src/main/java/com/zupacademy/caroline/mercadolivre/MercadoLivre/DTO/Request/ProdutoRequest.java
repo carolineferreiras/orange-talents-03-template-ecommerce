@@ -45,17 +45,14 @@ public class ProdutoRequest {
     public ProdutoRequest() {
     }
 
-    public ProdutoRequest(@NotBlank String nome, @Positive int quantidade,
-                              @NotBlank @Length(max = 1000) String descricao,
-                              @NotNull @Positive BigDecimal valor, @NotNull Long idCategoria,
-                              List<CaracteristicaRequest> caracteristicas) {
-        super();
+    public ProdutoRequest(String nome, Integer quantidade, String descricao, BigDecimal valor,
+                          Long idCategoria, List<CaracteristicaRequest> caracteristicas) {
         this.nome = nome;
         this.quantidade = quantidade;
         this.descricao = descricao;
         this.valor = valor;
         this.idCategoria = idCategoria;
-        this.caracteristicas.addAll(caracteristicas);
+        this.caracteristicas = caracteristicas;
     }
 
     public List<CaracteristicaRequest> getCaracteristicas() {

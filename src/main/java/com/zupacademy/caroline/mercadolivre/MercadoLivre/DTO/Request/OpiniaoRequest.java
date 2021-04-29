@@ -22,8 +22,6 @@ public class OpiniaoRequest {
     @NotBlank
     @Length(max = 500)
     private String descricao;
-    @Valid
-    @NotNull
     private Long idProduto;
 
     public @Positive @Min(value = 1) @Max(value = 5) int getNota() {

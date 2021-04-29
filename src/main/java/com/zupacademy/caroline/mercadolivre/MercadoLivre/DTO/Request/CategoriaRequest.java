@@ -24,6 +24,8 @@ public class CategoriaRequest {
         this.nome = nome;
     }
 
+
+
     @Override
     public String toString() {
         return "CategoriaRequest{" +

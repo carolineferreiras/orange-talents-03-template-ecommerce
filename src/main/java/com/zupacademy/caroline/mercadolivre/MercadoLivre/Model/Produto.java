@@ -2,6 +2,7 @@ package com.zupacademy.caroline.mercadolivre.MercadoLivre.Model;
 
 import com.zupacademy.caroline.mercadolivre.MercadoLivre.DTO.Request.CaracteristicaRequest;
 import io.jsonwebtoken.lang.Assert;
+import org.hibernate.query.Query;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -10,9 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Entity
@@ -42,6 +42,11 @@ public class Produto {
     private Set<CaracteristicaProduto> caracteristica = new HashSet<>();
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<ImagemProduto> imagens = new HashSet<>();
+    @OneToMany(mappedBy = "produto")
+    @OrderBy(value = "titulo asc")
+    private SortedSet<Pergunta> pergunta  = new TreeSet<>();
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Opiniao> opinioes= new HashSet<>();
 
     @Deprecated
     public Produto() {
@@ -90,7 +95,12 @@ public class Produto {
         return valor;
     }
 
+    public Set<CaracteristicaProduto> getCaracteristica() {
+        return caracteristica;
+    }
+
     public boolean pertenceAoUsuario(Usuario possivelDono) {
+
         return this.usuario.equals(possivelDono);
     }
 
@@ -102,4 +112,28 @@ public class Produto {
         this.imagens.addAll(imagens);
     }
 
+    public <T> Set<T> mapeiaCaracteristicas(
+            Function<CaracteristicaProduto, T> funcaoMapeadora) {
+        return this.caracteristica.stream().map(funcaoMapeadora)
+                .collect(Collectors.toSet());
+    }
+
+
+    public <T> Set<T> mapeiaImagens(
+            Function<ImagemProduto, T> funcaoMapeadora) {
+        return this.imagens.stream().map(funcaoMapeadora)
+                .collect(Collectors.toSet());
+    }
+
+    public <T extends Comparable<T>> SortedSet<T> mapeiaPerguntas(
+            Function<Pergunta, T> funcaoMapeadora) {
+        return this.pergunta.stream().map(funcaoMapeadora)
+                .collect(Collectors.toCollection(TreeSet :: new));
+    }
+
+
+    public <T> Set<T> mapeiaOpinioes(
+            Function<Opiniao, T> funcaoMapeadora) {
+        return this.opinioes.stream().map(funcaoMapeadora)
+                .collect(Collectors.toSet());}
 }

@@ -20,10 +20,10 @@ import java.util.stream.Stream;
 public class EmailDuplicadoTest{
 
     @DisplayName("Email unico")
-  @ParameterizedTest
-  @MethodSource("EmailUnicoCadastro")
+    @ParameterizedTest
+    @MethodSource("EmailUnicoCadastro")
 
-    @Test
+
     public void unicidadeEmailCadastro(Optional<Usuario> optUsuario, boolean esperado){
 
         //Mockando o repository, para não precisar nos conectar com o banco

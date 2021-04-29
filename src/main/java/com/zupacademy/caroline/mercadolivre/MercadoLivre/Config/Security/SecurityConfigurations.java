@@ -45,11 +45,11 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/").permitAll()
-                .antMatchers(HttpMethod.POST,"/auth").permitAll()
-                .antMatchers(HttpMethod.POST,"/usuario").permitAll()
-                .antMatchers(HttpMethod.POST,"/produtos").permitAll()
-                .antMatchers(HttpMethod.POST,"/categorias").permitAll()
-                .antMatchers(HttpMethod.POST,"/produtos/1/imagens").permitAll()
+//                .antMatchers(HttpMethod.POST,"/auth").permitAll()
+//                .antMatchers(HttpMethod.POST,"/usuario").permitAll()
+//                .antMatchers(HttpMethod.POST,"/produtos").permitAll()
+//                .antMatchers(HttpMethod.POST,"/categorias").permitAll()
+//                .antMatchers(HttpMethod.POST,"/produtos/1/imagens").permitAll()
                 //opiniao
 //                .anyRequest().authenticated()
                 .and().cors()
