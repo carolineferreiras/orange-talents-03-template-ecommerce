@@ -35,7 +35,7 @@ public class Usuario  implements UserDetails {
     private List<Perfil> perfis = new ArrayList<>();
 
     @Deprecated
-    public Usuario() {
+    public Usuario(String s) {
     }
 
     public Usuario(String email, String senha) {

@@ -2,7 +2,6 @@ package com.zupacademy.caroline.mercadolivre.MercadoLivre.Model;
 
 import com.zupacademy.caroline.mercadolivre.MercadoLivre.DTO.Request.CaracteristicaRequest;
 import io.jsonwebtoken.lang.Assert;
-import org.hibernate.query.Query;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -51,6 +50,7 @@ public class Produto {
     @Deprecated
     public Produto() {
     }
+
 
     public Produto(String nome, int quantidade, String descricao, BigDecimal valor, Categoria categoria, Usuario usuario, Collection<CaracteristicaRequest> caracteristica) {
         this.nome = nome;
@@ -136,4 +136,14 @@ public class Produto {
             Function<Opiniao, T> funcaoMapeadora) {
         return this.opinioes.stream().map(funcaoMapeadora)
                 .collect(Collectors.toSet());}
+
+
+    public boolean abateDoEstoque(@Positive int quantidade) {
+    Assert .isTrue(quantidade > 0, "A quantidade deve ser maior que zero" + quantidade);
+    if (quantidade <= this.quantidade){
+        this.quantidade-=quantidade;
+        return true;
+    }
+    return false;
+    }
 }
