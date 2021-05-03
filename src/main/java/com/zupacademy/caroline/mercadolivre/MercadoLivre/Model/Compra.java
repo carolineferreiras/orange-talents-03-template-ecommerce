@@ -2,12 +2,18 @@ package com.zupacademy.caroline.mercadolivre.MercadoLivre.Model;
 
 
 
+import com.zupacademy.caroline.mercadolivre.MercadoLivre.DTO.Request.RetornoPagSeguroRequest;
 import com.zupacademy.caroline.mercadolivre.MercadoLivre.Util.GatewayPagamento;
+import com.zupacademy.caroline.mercadolivre.MercadoLivre.Util.RetornoGatewayPagamento;
+import io.jsonwebtoken.lang.Assert;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Compra {
@@ -28,6 +34,8 @@ public class Compra {
     @Enumerated
     @NotNull
     private  GatewayPagamento gateway;
+    @OneToMany(mappedBy = "compra",cascade = CascadeType.MERGE)
+    private Set<Transacao> transacoes = new HashSet<>();
 
     @Deprecated
     public Compra() {
@@ -42,18 +50,31 @@ public class Compra {
         this.gateway = gateway;
     }
 
-
-    @Override
-    public String toString() {
-        return "Compra{" +
-                "id=" + id +
-                ", produtoEscolhido=" + produtoEscolhido +
-                ", quantidade=" + quantidade +
-                ", comsumidor=" + comsumidor +
-                '}';
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void adicionaTransacao(@Valid RetornoGatewayPagamento request) {
+        Transacao novaTransacao = request.toTransacao(this);
+        Assert.state(!this.transacoes.contains(novaTransacao),
+                "Já existe uma transacao processada "
+                        + novaTransacao);
+        Assert.state(transacoesConcluidasComSucesso().isEmpty(),"Esse compra já foi concluída com sucesso");
+        this.transacoes.add(novaTransacao);
+    }
+
+
+    private Set<Transacao> transacoesConcluidasComSucesso() {
+        Set<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream()
+                .filter(Transacao::concluidaComSucesso)
+                .collect(Collectors.toSet());
+
+        Assert.isTrue(transacoesConcluidasComSucesso.size() <= 1,"Favor veridicar a transação"+this.id);
+        return transacoesConcluidasComSucesso;
+    }
+
+
+    public boolean processadaComSucesso() {
+        return !transacoesConcluidasComSucesso().isEmpty();
     }
 }
